@@ -44,7 +44,7 @@ app.get('/books', (req,res)=>{
 })
 })
 app.get('/', (req,res)=>{
-  res.send("hello home page")
+  res.send("Server IS UP!!")
   })
 
 app.post('/books', createNewBook)
