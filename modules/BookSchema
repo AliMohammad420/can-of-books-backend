@@ -1,0 +1,75 @@
+const mongoose = require('mongoose');
+
+function handleBookSchema(req, res) {
+
+    BookModel.find({}, (error, data) => {
+        if (error) console.log(`error reading from the database: ${error}`);
+        else res.send(data);
+    });
+
+}
+
+function createNewBook(req, res) {
+    const { newBook } = req.body;
+    const book = new BookModel(newBook);
+    book.save();
+    res.status(201).send(book);
+}
+
+function deleteBook(req, res) {
+    const id = req.params.id;
+    BookModel.findByIdAndDelete(id).then(record => {
+        res.send(record);
+    }).catch(error => {
+        res.status(500).send(error.message)
+    })
+}
+
+function updateBook(req, res) {
+    const id = req.params.id;
+    const { data } = req.body;
+    BookModel.findByIdAndUpdate(id, data).then(record => {
+        res.send(record);
+    }).catch(error => {
+        res.status(500).send(error.message)
+    })
+}
+
+mongoose.connect('mongodb://localhost:27017/booksDB')
+
+
+const bookSchema = new mongoose.Schema({
+    title: String,
+    description: String,
+    status: String,
+})
+
+const BookModel = mongoose.model('BookModel', bookSchema);
+
+   const book1 = new BookModel({
+    name: "Harry Potter and the Goblet of Fire",
+    description: "The Triwizard Tournament is to be held at Hogwarts. Only wizards who are over seventeen are allowed to enter - but that doesn't stop Harry dreaming that he will win the competition. Then at Hallowe'en, when the Goblet of Fire makes its selection, Harry is amazed to find his name is one of those that the magical cup picks out. He will face death-defying tasks, dragons and Dark wizards, but with the help of his best friends, Ron and Hermione, he might just make it through - alive!",
+    status:"Harry Potter and the Goblet of Fire"
+  })
+  
+  const book2 = new BookModel({
+    name: "Harry Potter and the Philosopher's Stone",
+    description: "The Triwizard Tournament is to be held at Hogwarts. Only wizards who are over seventeen are allowed to enter - but that doesn't stop Harry dreaming that he will win the competition. Then at Hallowe'en, when the Goblet of Fire makes its selection, Harry is amazed to find his name is one of those that the magical cup picks out. He will face death-defying tasks, dragons and Dark wizards, but with the help of his best friends, Ron and Hermione, he might just make it through - alive!",
+    status:"Harry Potter and the Goblet of Fire"
+  })
+  
+  const book3 = new BookModel({
+    name: "Harry Potter and the Deathly Hallows",
+    description: "The Triwizard Tournament is to be held at Hogwarts. Only wizards who are over seventeen are allowed to enter - but that doesn't stop Harry dreaming that he will win the competition. Then at Hallowe'en, when the Goblet of Fire makes its selection, Harry is amazed to find his name is one of those that the magical cup picks out. He will face death-defying tasks, dragons and Dark wizards, but with the help of his best friends, Ron and Hermione, he might just make it through - alive!",
+    status:"Harry Potter and the Goblet of Fire"
+  })
+  
+
+
+/* book1.save();
+book2.save();
+book3.save(); */
+
+
+module.exports = { handleBookSchema, createNewBook, deleteBook, updateBook }
+
