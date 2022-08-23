@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json())
 
 app.get('/test', (request, response) => {
-  response.send('test request received')
+  response.send('Server IS UP!!')
 })
 
 const { handleBookSchema } = require('./modules/BookSchema');
